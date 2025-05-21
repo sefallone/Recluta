@@ -60,7 +60,7 @@ if archivo is not None:
 
     col5.metric("👥 Contrataciones", f"{len(contratados)}")
 
-    style_metric_cards(background_color="#f0f2f6", border_left_color="#1f77b4", border_color="#FFFFFF")
+    style_metric_cards(background_color="#3333ff", border_left_color="#ff5733", border_color="#FFFFFF")
 
     # Tabs
     kpi_tab, grafico_tab, detalle_tab = st.tabs(["📌 KPIs", "📈 Gráficos", "📋 Detalle"])
@@ -133,4 +133,5 @@ if archivo is not None:
         st.download_button("📥 Descargar datos filtrados", data=csv, file_name="reclutamiento_filtrado.csv", mime="text/csv")
 else:
     st.warning("Por favor sube un archivo Excel para visualizar el dashboard.")
+
 
