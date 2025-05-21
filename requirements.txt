@@ -1,7 +1,10 @@
 streamlit
 pandas
 numpy
-plotly.express
-datetime 
-random
-timedelta
+matplotlib
+openpyxl
+seaborn
+plotly
+streamlit_extras
+yfinance
+ta
