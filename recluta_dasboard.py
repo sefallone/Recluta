@@ -4,24 +4,24 @@ import plotly.express as px
 from streamlit_extras.metric_cards import style_metric_cards
 
 # Configurar página
-st.set_page_config(page_title="Dashboard Marycel Mercado", layout="wide")
+st.set_page_config(page_title="Dashboard de Reclutamiento", layout="wide")
 
 # Sidebar - Imagen superior
-st.sidebar.image("hunter1.jpg", use_container_width=True)
+st.sidebar.image("/mnt/data/hunter1.jpg", use_container_width=True)
 st.sidebar.markdown("""
-<div style='text-align: center; color: #FFFFFF; font-weight: bold; margin-top: 10px;'>
+<div style='text-align: center; color: #003366; font-weight: bold; margin-top: 10px;'>
     Marycel Mercado<br>Senior People Hunter
-    <hr style='border: none; height: 2px; background-color: #FFFFFF; margin-top: 10px;'>
+    <hr style='border: none; height: 2px; background-color: #003366; margin-top: 10px;'>
     <div style='font-size: 12px; font-weight: normal; margin-top: 10px;'>
-        🌐 <a href='https://www.thepeoplehunter.com' target='_blank' style='color: #FFFFFF; text-decoration: none;'>www.thepeoplehunter.com</a><br>
-        🌐 <a href='https://www.themedicalhunter.com' target='_blank' style='color: #FFFFFF; text-decoration: none;'>www.themedicalhunter.com</a><br>
-        📞 <span style='color: #FFFFFF;'>Teléfono: +34 667 668 047</span>
+        🌐 <a href='https://www.thepeoplehunter.com' target='_blank' style='color: #003366; text-decoration: none;'>www.thepeoplehunter.com</a><br>
+        🌐 <a href='https://www.themedicalhunter.com' target='_blank' style='color: #003366; text-decoration: none;'>www.themedicalhunter.com</a><br>
+        📞 <span style='color: #003366;'>Teléfono: +34 667 668 047</span>
     </div>
 </div>
 """, unsafe_allow_html=True)
 
 # Título
-st.title("📊 Marycel Mercado THE PEOPLE HUNTER ")
+st.title("📊 Dashboard de Reclutamiento")
 
 # Subir archivo
 st.header("📁 Cargar archivo Excel")
@@ -75,7 +75,7 @@ if archivo is not None:
         col4.metric("💰 Costo por contratación", f"€{costo_prom:,.2f}")
         col5.metric("👥 Contrataciones", f"{len(contratados)}")
 
-        style_metric_cards(background_color="#2410ca", border_left_color="#8910ca", border_color="#FFFFFF")
+        style_metric_cards(background_color="#f0f2f6", border_left_color="#1f77b4", border_color="#FFFFFF")
 
     with grafico_tab:
         st.subheader("📊 Gráficos")
@@ -92,6 +92,23 @@ if archivo is not None:
         fig3 = px.box(contratados, y='tiempo_contratacion_dias', points="all", title="Distribución tiempo de contratación")
         st.plotly_chart(fig3, use_container_width=True)
 
+        # Nuevas gráficas comparativas
+        st.subheader("📊 Comparativas por categoría")
+
+        tiempo_por_nivel = contratados.groupby('nivel')['tiempo_contratacion_dias'].mean().reset_index()
+        fig4 = px.bar(tiempo_por_nivel, x='nivel', y='tiempo_contratacion_dias', title="Tiempo Promedio de Contratación por Nivel")
+        st.plotly_chart(fig4, use_container_width=True)
+
+        costo_por_fuente = contratados.groupby('fuente_reclutamiento')['costo_reclutamiento'].mean().reset_index()
+        fig5 = px.bar(costo_por_fuente, x='fuente_reclutamiento', y='costo_reclutamiento', title="Costo Promedio por Fuente de Reclutamiento")
+        st.plotly_chart(fig5, use_container_width=True)
+
+        ofertas_por_departamento = filtered_df[filtered_df['estado_proceso'].str.contains("Oferta", na=False)]
+        aceptadas_por_dpto = ofertas_por_departamento.groupby('departamento')['oferta_aceptada'].mean().reset_index()
+        aceptadas_por_dpto['oferta_aceptada'] *= 100
+        fig6 = px.bar(aceptadas_por_dpto, x='departamento', y='oferta_aceptada', title="Tasa de Aceptación de Oferta por Departamento (%)")
+        st.plotly_chart(fig6, use_container_width=True)
+
     with detalle_tab:
         st.subheader("📋 Detalle de Datos Filtrados")
         st.dataframe(filtered_df)
@@ -100,6 +117,7 @@ if archivo is not None:
 
 else:
     st.warning("Por favor sube un archivo Excel para visualizar el dashboard.")
+
 
 
 
