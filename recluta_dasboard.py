@@ -6,8 +6,8 @@ from streamlit_extras.metric_cards import style_metric_cards
 # Configurar página
 st.set_page_config(page_title="Dashboard de Reclutamiento", layout="wide")
 
-# Sidebar - Imagen superior con info personalizada
-st.sidebar.image("/mnt/data/hunter1.jpg", use_column_width=True)
+# Sidebar - Imagen superior + información personalizada
+st.sidebar.image("/mnt/data/hunter1.jpg", use_container_width=True)
 st.sidebar.markdown("""
 <div style='text-align: center; color: #003366; font-weight: bold; margin-top: 10px;'>
     Marycel Mercado<br>Senior People Hunter
@@ -20,10 +20,10 @@ st.sidebar.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Título
+# Título principal
 st.title("📊 Dashboard de Reclutamiento")
 
-# Subir archivo
+# Subida de archivo
 st.header("📁 Cargar archivo Excel")
 archivo = st.file_uploader("Selecciona un archivo Excel", type=["xlsx"])
 
@@ -82,7 +82,8 @@ if archivo is not None:
     st.subheader("📊 Gráficos")
 
     fuente_data = contratados['fuente_reclutamiento'].value_counts(normalize=True) * 100
-    fig1 = px.bar(fuente_data, x=fuente_data.index, y=fuente_data.values, labels={'x': 'Fuente', 'y': 'Porcentaje'}, title="Fuente de contratación (%)")
+    fig1 = px.bar(fuente_data, x=fuente_data.index, y=fuente_data.values,
+                  labels={'x': 'Fuente', 'y': 'Porcentaje'}, title="Fuente de contratación (%)")
     st.plotly_chart(fig1, use_container_width=True)
 
     contratados['mes_aplicacion'] = pd.to_datetime(contratados['mes_aplicacion'], errors='coerce')
@@ -100,6 +101,7 @@ if archivo is not None:
     st.download_button("📥 Descargar datos filtrados", data=csv, file_name="reclutamiento_filtrado.csv", mime="text/csv")
 else:
     st.warning("Por favor sube un archivo Excel para visualizar el dashboard.")
+
 
 
 
