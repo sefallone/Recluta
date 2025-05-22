@@ -7,7 +7,7 @@ from streamlit_extras.metric_cards import style_metric_cards
 st.set_page_config(page_title="Dashboard de Reclutamiento", layout="wide")
 
 # Sidebar - Imagen superior + información personalizada
-st.sidebar.image("/mnt/data/hunter1.jpg", use_container_width=True)
+st.sidebar.image("hunter1.jpg", use_container_width=True)
 st.sidebar.markdown("""
 <div style='text-align: center; color: #003366; font-weight: bold; margin-top: 10px;'>
     Marycel Mercado<br>Senior People Hunter
