@@ -6,7 +6,7 @@ from streamlit_extras.metric_cards import style_metric_cards
 # Configurar página
 st.set_page_config(page_title="Dashboard de Reclutamiento", layout="wide")
 
-# Sidebar - Imagen superior
+# Sidebar - Imagen superior con info personalizada
 st.sidebar.image("/mnt/data/hunter1.jpg", use_column_width=True)
 st.sidebar.markdown("""
 <div style='text-align: center; color: #003366; font-weight: bold; margin-top: 10px;'>
@@ -16,9 +16,6 @@ st.sidebar.markdown("""
         🌐 <a href='https://www.thepeoplehunter.com' target='_blank' style='color: #003366; text-decoration: none;'>www.thepeoplehunter.com</a><br>
         🌐 <a href='https://www.themedicalhunter.com' target='_blank' style='color: #003366; text-decoration: none;'>www.themedicalhunter.com</a><br>
         📞 <span style='color: #003366;'>Teléfono: +34 667 668 047</span>
-        <a href='https://www.thepeoplehunter.com' target='_blank' style='color: #003366; text-decoration: none;'>www.thepeoplehunter.com</a><br>
-        <a href='https://www.themedicalhunter.com' target='_blank' style='color: #003366; text-decoration: none;'>www.themedicalhunter.com</a><br>
-        <span style='color: #003366;'>Teléfono: +34 667 668 047</span>
     </div>
 </div>
 """, unsafe_allow_html=True)
@@ -103,6 +100,7 @@ if archivo is not None:
     st.download_button("📥 Descargar datos filtrados", data=csv, file_name="reclutamiento_filtrado.csv", mime="text/csv")
 else:
     st.warning("Por favor sube un archivo Excel para visualizar el dashboard.")
+
 
 
 
