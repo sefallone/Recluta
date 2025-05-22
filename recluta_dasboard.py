@@ -23,7 +23,7 @@ st.sidebar.markdown("""
 # Título
 st.title("📊 Marycel Mercado THE PEOPLE HUNTER")
 
-# Subir archivo
+# Subida de archivo
 st.header("📁 Cargar archivo Excel")
 archivo = st.file_uploader("Selecciona un archivo Excel", type=["xlsx"])
 
@@ -59,8 +59,9 @@ if archivo is not None:
 
     with kpi_tab:
         st.subheader("📈 Resultados Generales")
-        col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
 
+        # Primera fila de KPIs
+        col1, col2, col3, col4 = st.columns(4)
         tiempo_prom = filtered_df['tiempo_contratacion_dias'].mean()
         total_candidatos = len(filtered_df)
         contratados = filtered_df[filtered_df['estado_proceso'] == 'Oferta aceptada']
@@ -71,13 +72,19 @@ if archivo is not None:
         costo_prom = contratados['costo_reclutamiento'].mean()
 
         col1.metric("⏱️ Tiempo promedio contratación", f"{tiempo_prom:.1f} días", help="Promedio de días entre la fecha de aplicación y la aceptación de oferta.")
-        col2.metric("🎯 Tasa de conversión", f"{tasa_conversion:.1f}%", help="Porcentaje de candidatos que fueron contratados sobre el total de candidatos.")
-        col3.metric("📩 Tasa aceptación de oferta", f"{tasa_aceptacion:.1f}%", help="Porcentaje de ofertas aceptadas sobre el total de ofertas extendidas.")
-        col4.metric("💰 Costo por contratación", f"€{costo_prom:,.2f}", help="Promedio de costos de reclutamiento por contratación exitosa.")
+        col2.metric("🎯 Tasa de conversión", f"{tasa_conversion:.1f}%", help="Porcentaje de candidatos contratados sobre el total de candidatos.")
+        col3.metric("📩 Tasa aceptación de oferta", f"{tasa_aceptacion:.1f}%", help="Porcentaje de ofertas aceptadas sobre el total de ofertas.")
+        col4.metric("💰 Costo por contratación", f"€{costo_prom:,.2f}", help="Promedio de costos por contratación exitosa.")
+
+        # Espaciado visual
+        st.markdown("<div style='margin-top: 1rem'></div>", unsafe_allow_html=True)
+
+        # Segunda fila de KPIs
+        col5, col6, col7 = st.columns(3)
         col5.metric("👥 Contrataciones", f"{len(contratados)}", help="Número total de candidatos que aceptaron una oferta.")
-        
+
         tasa_ofertas_realizadas = (len(ofertas_totales) / total_candidatos * 100) if total_candidatos else 0
-        col6.metric("📤 Tasa de ofertas realizadas", f"{tasa_ofertas_realizadas:.1f}%", help="Porcentaje de candidatos que recibieron oferta sobre el total de candidatos.")
+        col6.metric("📤 Tasa de ofertas realizadas", f"{tasa_ofertas_realizadas:.1f}%", help="Porcentaje de candidatos que recibieron oferta.")
 
         if not contratados.empty:
             fuente_principal = contratados['fuente_reclutamiento'].value_counts(normalize=True).idxmax()
@@ -101,6 +108,7 @@ if archivo is not None:
         fig3 = px.box(contratados, y='tiempo_contratacion_dias', points="all", title="Distribución tiempo de contratación")
         st.plotly_chart(fig3, use_container_width=True)
 
+        # Comparativas
         st.subheader("📊 Comparativas por categoría")
 
         tiempo_por_nivel = contratados.groupby('nivel')['tiempo_contratacion_dias'].mean().reset_index()
