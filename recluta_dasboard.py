@@ -3,26 +3,14 @@ import pandas as pd
 import plotly.express as px
 from streamlit_extras.metric_cards import style_metric_cards
 
-# Configurar página con favicon y layout
-st.set_page_config(
-    page_title="Dashboard de Reclutamiento",
-    layout="wide",
-    page_icon="📊"
-)
+# Configurar página
+st.set_page_config(page_title="Dashboard de Reclutamiento", layout="wide")
 
-# Encabezado con logo y título estilizado
-st.markdown("""
-    <div style='display: flex; align-items: center; justify-content: space-between; background-color: #1f2c56; padding: 1rem; border-radius: 10px;'>
-        <div style='color: white;'>
-            <h2 style='margin: 0;'>📊 Dashboard de Reclutamiento</h2>
-            <p style='margin: 0;'>Análisis interactivo de procesos y métricas clave de selección</p>
-        </div>
-    </div>
-    <br>
-""", unsafe_allow_html=True)
+# Título
+st.title("📊 Dashboard de Reclutamiento")
 
 # Subir archivo
-st.markdown("### 📁 Cargar archivo Excel")
+st.header("📁 Cargar archivo Excel")
 archivo = st.file_uploader("Selecciona un archivo Excel", type=["xlsx"])
 
 if archivo is not None:
@@ -36,18 +24,16 @@ if archivo is not None:
     df = load_data(archivo)
 
     # Filtros
-    st.markdown("### 🔎 Filtros")
-    with st.expander("Mostrar / ocultar filtros", expanded=True):
-        with st.container():
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                año = st.multiselect("🗓️ Año de aplicación", df['año_aplicacion'].unique(), default=df['año_aplicacion'].unique())
-                nivel = st.multiselect("📶 Nivel", df['nivel'].dropna().unique(), default=df['nivel'].dropna().unique())
-            with col2:
-                departamento = st.multiselect("🏢 Departamento", df['departamento'].unique(), default=df['departamento'].unique())
-                puesto = st.multiselect("👔 Puesto", df['puesto'].dropna().unique(), default=df['puesto'].dropna().unique())
-            with col3:
-                fuente = st.multiselect("🌐 Fuente de reclutamiento", df['fuente_reclutamiento'].dropna().unique(), default=df['fuente_reclutamiento'].dropna().unique())
+    st.subheader("🔎 Filtros")
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        año = st.multiselect("Año de aplicación", df['año_aplicacion'].unique(), default=df['año_aplicacion'].unique())
+        nivel = st.multiselect("Nivel", df['nivel'].dropna().unique(), default=df['nivel'].dropna().unique())
+    with col2:
+        departamento = st.multiselect("Departamento", df['departamento'].unique(), default=df['departamento'].unique())
+        puesto = st.multiselect("Puesto", df['puesto'].dropna().unique(), default=df['puesto'].dropna().unique())
+    with col3:
+        fuente = st.multiselect("Fuente de reclutamiento", df['fuente_reclutamiento'].dropna().unique(), default=df['fuente_reclutamiento'].dropna().unique())
 
     # Filtrado de datos
     filtered_df = df[
@@ -59,11 +45,7 @@ if archivo is not None:
     ]
 
     # KPIs
-    st.markdown("""
-    <hr style='margin-top: 1rem; margin-bottom: 1rem;'>
-    <h3 style='color:#1f2c56;'>📈 Resultados Generales</h3>
-    """, unsafe_allow_html=True)
-
+    st.subheader("📈 Resultados Generales")
     col1, col2, col3, col4, col5 = st.columns(5)
     tiempo_prom = filtered_df['tiempo_contratacion_dias'].mean()
     total_candidatos = len(filtered_df)
@@ -83,7 +65,7 @@ if archivo is not None:
     style_metric_cards(background_color="#f0f2f6", border_left_color="#1f77b4", border_color="#FFFFFF")
 
     # Gráficos
-    st.markdown("<h3 style='color:#1f2c56;'>📊 Gráficos</h3>", unsafe_allow_html=True)
+    st.subheader("📊 Gráficos")
 
     fuente_data = contratados['fuente_reclutamiento'].value_counts(normalize=True) * 100
     fig1 = px.bar(fuente_data, x=fuente_data.index, y=fuente_data.values, labels={'x': 'Fuente', 'y': 'Porcentaje'}, title="Fuente de contratación (%)")
@@ -98,7 +80,7 @@ if archivo is not None:
     st.plotly_chart(fig3, use_container_width=True)
 
     # Tabla de detalle
-    st.markdown("### 📋 Detalle de Datos Filtrados")
+    st.subheader("📋 Detalle de Datos Filtrados")
     st.dataframe(filtered_df)
     csv = filtered_df.to_csv(index=False).encode('utf-8')
     st.download_button("📥 Descargar datos filtrados", data=csv, file_name="reclutamiento_filtrado.csv", mime="text/csv")
