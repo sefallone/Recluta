@@ -21,7 +21,7 @@ st.sidebar.markdown("""
 """, unsafe_allow_html=True)
 
 # Título
-st.title("📊 Marycel Mercado "THE PEOPLE HUNTER")
+st.title("📊 Marycel Mercado "THE PEOPLE HUNTER"")
 
 # Subir archivo
 st.header("📁 Cargar archivo Excel")
