@@ -4,7 +4,7 @@ import plotly.express as px
 from streamlit_extras.metric_cards import style_metric_cards
 
 # Configurar página
-st.set_page_config(page_title="Dashboard de Reclutamiento", layout="wide")
+st.set_page_config(page_title="Dashboard Marycel Mercado", layout="wide")
 
 # Subir archivo
 st.header("📁 Cargar archivo Excel")
@@ -43,7 +43,7 @@ if archivo is not None:
     ]
 
     # KPIs Generales
-    st.title("📊 Dashboard de Reclutamiento")
+    st.title("📊 Marycel Mercado Reclutamiento")
 
     col1, col2, col3, col4, col5 = st.columns(5)
 
@@ -65,7 +65,7 @@ if archivo is not None:
 
     col5.metric("👥 Contrataciones", f"{len(contratados)}")
 
-    style_metric_cards(background_color="#3333ff", border_left_color="#ff5733", border_color="#FFFFFF")
+    style_metric_cards(background_color="#0633cd", border_left_color="#ec16dc", border_color="#ec16dc")
 
     # Tabs
     kpi_tab, grafico_tab, detalle_tab = st.tabs(["📌 KPIs", "📈 Gráficos", "📋 Detalle"])
