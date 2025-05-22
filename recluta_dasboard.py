@@ -7,8 +7,8 @@ from streamlit_extras.metric_cards import style_metric_cards
 st.set_page_config(page_title="Dashboard de Reclutamiento", layout="wide")
 
 # Subir archivo
-st.sidebar.header("📁 Cargar archivo Excel")
-archivo = st.sidebar.file_uploader("Selecciona un archivo Excel", type=["xlsx"])
+st.header("📁 Cargar archivo Excel")
+archivo = st.file_uploader("Selecciona un archivo Excel", type=["xlsx"])
 
 if archivo is not None:
     @st.cache_data
@@ -20,13 +20,17 @@ if archivo is not None:
 
     df = load_data(archivo)
 
-    # Sidebar - Filtros
-    st.sidebar.header("Filtros")
-    año = st.sidebar.multiselect("Año de aplicación", df['año_aplicacion'].unique(), default=df['año_aplicacion'].unique())
-    departamento = st.sidebar.multiselect("Departamento", df['departamento'].unique(), default=df['departamento'].unique())
-    nivel = st.sidebar.multiselect("Nivel", df['nivel'].dropna().unique(), default=df['nivel'].dropna().unique())
-    puesto = st.sidebar.multiselect("Puesto", df['puesto'].dropna().unique(), default=df['puesto'].dropna().unique())
-    fuente = st.sidebar.multiselect("Fuente de reclutamiento", df['fuente_reclutamiento'].dropna().unique(), default=df['fuente_reclutamiento'].dropna().unique())
+    # Filtros fuera del sidebar
+    st.markdown("## 🔎 Filtros")
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        año = st.multiselect("Año de aplicación", df['año_aplicacion'].unique(), default=df['año_aplicacion'].unique())
+        nivel = st.multiselect("Nivel", df['nivel'].dropna().unique(), default=df['nivel'].dropna().unique())
+    with col2:
+        departamento = st.multiselect("Departamento", df['departamento'].unique(), default=df['departamento'].unique())
+        puesto = st.multiselect("Puesto", df['puesto'].dropna().unique(), default=df['puesto'].dropna().unique())
+    with col3:
+        fuente = st.multiselect("Fuente de reclutamiento", df['fuente_reclutamiento'].dropna().unique(), default=df['fuente_reclutamiento'].dropna().unique())
 
     # Filtrado
     filtered_df = df[
@@ -133,5 +137,6 @@ if archivo is not None:
         st.download_button("📥 Descargar datos filtrados", data=csv, file_name="reclutamiento_filtrado.csv", mime="text/csv")
 else:
     st.warning("Por favor sube un archivo Excel para visualizar el dashboard.")
+
 
 
